@@ -1,71 +1,49 @@
-import { useState } from 'react'
-export default function App() {
-  return (
-    <div>
-      <TipCalculator />
-    </div>
-  )
+import React, { useState } from 'react'
+
+const App = () => {
+    return (
+        <>
+
+            <Counter />
+        </>
+    )
 }
 
-function TipCalculator() {
-  const [bill, setBill] = useState(0)
-  const [percentage1, setPercentage1] = useState(0)
-  const [percentage2, setPercentage2] = useState(0)
 
-  const tip = bill * (percentage1 + percentage2) / 2 / 100
+function Counter() {
+    const [count, setCount] = useState(0)
+    const [step, setStep] = useState(1)
 
-  function handleReset() {
-    setBill('')
-    setPercentage1(0)
-    setPercentage2(0)
-  }
+    const date = new Date("September 10 2024")
+    date.setDate(date.getDate() + count)
 
-  return (
-    <div>
-      <BillInput bill={bill} onSetBill={setBill} />
-      <SelectPercentage percentage={percentage1} onSelect={setPercentage1}>How did you like the service?</SelectPercentage>
-      <SelectPercentage percentage={percentage2} onSelect={setPercentage2}>How did your friend like the service?</SelectPercentage>
-      
-      {bill > 0 &&
-      <>
-        <Output bill={bill} tip={tip} />
-      <Reset onReset={handleReset} />
-      </>
-      }
-    </div>
-  )
+    return (
+        <div>
+            <div>
+                <button onClick={() => setStep((s) => s - 1)}>-</button>
+                <span>Step : {step}</span>
+                <button onClick={() => setStep((s) => s + 1)}>+</button>
+            </div>
+
+            <div>
+                <button onClick={() => setCount((c) => c - step)}>-</button>
+                <span>Count: {count}</span>
+                <button onClick={() => setCount((c) => c + step)}>+</button>
+            </div>
+
+            <p>
+                <span>
+                    {count === 0
+                        ? "Today is "
+                        : count > 0
+                            ? `${count} days from today is `
+                            : `${Math.abs(count)} days ago  was`}
+                </span>
+                {date.toDateString()}
+            </p>
+        </div>
+    )
 }
 
-function BillInput({ bill, onSetBill }) {
 
-  return (
-    <div>
-      <label>How much was the bill?</label>
-      <input type="text" placeholder="Bill value"
-        value={bill}
-        onChange={e => onSetBill(Number(e.target.value))} />
-    </div>
-  )
-}
-function SelectPercentage({ children, percentage, onSelect }) {
-  return (
-    <div>
-      <label>{children}</label>
-      <select
-        value={percentage}
-        onChange={e => onSelect(Number(e.target.value))}>
-        <option value="0">Dissatisfied (0%)</option>
-        <option value="5">It was okay (5%)</option>
-        <option value="10">It was good (10%)</option>
-        <option value="20">Absolutely amazing (20%)</option>
-      </select>
-    </div>
-  )
-}
-function Output({ bill, tip }) {
-  return <h3>You pay ${bill + tip} (${bill} + ${tip} tip)</h3>
-}
-function Reset({ onReset }) {
-  return <button onClick={onReset}>Reset</button>
-}
-
+export default App
