@@ -1,4 +1,4 @@
-import "./styles.css";
+import "./index.css";
 
 export default function App() {
   return (
@@ -38,7 +38,10 @@ function TextExpander({
   collapsedNumWords,
   expandButtonText,
   collapseButtonText,
-  buttonColor
+  buttonColor,
+  expanded,
+  className,
+  children
 }) {
-  return <div>TODO</div>;
+  return <div className={className}>{children}</div>;
 }
